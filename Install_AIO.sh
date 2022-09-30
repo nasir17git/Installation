@@ -37,7 +37,7 @@ then
 else
   PATH=$PATH:$JAVA_HOME
   export PATH=$PATH
-  echo "exxport PATH=${PATH}" | tee -a ~/.bash_profile
+  echo "export PATH=${PATH}" | tee -a ~/.bash_profile
 fi
 
 
@@ -48,9 +48,7 @@ pc "green" "
 
 wget -q -O - https://pkg.jenkins.io/debian-stable/jenkins.io.key | sudo apt-key add -
 
-
 sudo sh -c 'echo deb https://pkg.jenkins.io/debian-stable binary/ > /etc/apt/sources.list.d/jenkins.list'
-
 
 pc "dark-gray" "
 ###########################\n\
@@ -59,7 +57,6 @@ pc "dark-gray" "
 
 sudo apt-get update
 sudo apt-get install jenkins -y
-
 
 servicename="jenkins"
 if [ $(systemctl is-active $servicename) == "inactive" ]
@@ -140,8 +137,8 @@ pc "magenta" "\n\
 
 sudo apt-get update && sudo apt-get install -y gnupg software-properties-common curl
 curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
-sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
-sudo apt-get update && sudo apt-get install terraform
+yes '' | sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+sudo apt-get update && sudo apt-get install terraform -y
 
 pc "magenta" "\n\
 #########################################\n\
@@ -154,20 +151,6 @@ pc "green" "
 ##################################"
 
 terraform -install-autocomplete
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -188,8 +171,6 @@ pc "cyan" "\n\
 ########################################\n\
 ##   Finished Docker-compose Install  ##\n\
 ########################################"
-
-
 
 
 ##################################
@@ -242,12 +223,14 @@ pc "light-cyan" "\n\
 
 
 
-VERSION=
+VERSION="1.21.12-00"
 
-while [ -z $VERSION ]
-do
-  read -p "Enter The Version of kubectl you want  (e.g. 1.21.12-00) : " VERSION
-done
+##
+# while [ -z $VERSION ]
+# do
+#   read -p "Enter The Version of kubectl you want  (e.g. 1.21.12-00) : " VERSION
+# done
+
 ##  Add Kubernetes Repository 
 
 pc "green" "
@@ -386,14 +369,17 @@ Your First Administrator password :  $(sudo cat /var/lib/jenkins/secrets/initial
 
 pc "red" "\n\n\n##  You must reboot this terminal to apply modification ##"
 
+
+
 pc "yellow" "\n\
-##################   Auto Completion Settings  #################\n\
-\n\
-echo 'source <(kubectl completion bash)' >> ~/.bashrc\n\
-\n\
+##################   Auto Completion Settings  #################"
+
+
+echo 'source <(kubectl completion bash)' >> ~/.bashrc
+
 echo 'k=kubectl' >> ~/.bashrc
-\n\
-echo 'complete -o default -F __start_kubectl k' >> ~/.bashrc\n\
-\n\
-\n\
-helm completion bash > /etc/bash_completion.d/helm"
+
+echo 'complete -o default -F __start_kubectl k' >> ~/.bashrc
+
+helm completion bash |sudo tee /etc/bash_completion.d/helm
+
