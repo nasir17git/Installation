@@ -225,7 +225,8 @@ pc "light-cyan" "\n\
 
 VERSION="1.21.12-00"
 
-##
+## 버전입력하기 귀찮아서 그냥 고정
+
 # while [ -z $VERSION ]
 # do
 #   read -p "Enter The Version of kubectl you want  (e.g. 1.21.12-00) : " VERSION
@@ -383,3 +384,10 @@ echo 'complete -o default -F __start_kubectl k' >> ~/.bashrc
 
 helm completion bash |sudo tee /etc/bash_completion.d/helm
 
+
+
+
+pc "green" "\n\
+##################   Shell Reload  #################"
+
+exec bash
